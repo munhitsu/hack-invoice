@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Invoice {{  page.nr }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" >
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+      .signature-box {
+          padding-top: 90px;
+      }
+
+    </style>
+</head>
+<body>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <div class="container-narrow">
+        <div class="row-fluid">
+            <div class="span4">
+                <h3>Invoice</h3>
+            </div>
+            <div class="offset4 span4">
+                <h3>Nr: {{ page.nr }}</h3>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="offset8 span4">
+                Date of issue: <b>{{ page.issued_on }}</b><br/>
+                Date of sale: <b>{{ page.sold_on }}</b>
+            </div>
+        </div>
+        <div class="row-fluid">
+            &nbsp;<br/>
+            &nbsp;<br/>
+        </div>
+        <div class="row-fluid">
+            <div class="span6">
+                Seller: <b>{{ page.seller.name }}</b></br>
+                Address: <b>{{ page.seller.address }}</b></br>
+                VAT code: <b>{{ page.seller.vat }}</b></br>
+            </div>
+            <div class="span6">
+                Buyer: <b>{{ page.buyer.name }}</b></br>
+                Address: <b>{{ page.buyer.address }}</b></br>
+                VAT code: <b>{{ page.buyer.vat }}</b></br>
+            </div>
+        </div>
+        <div class="row-fluid">
+            &nbsp;<br/>
+            &nbsp;<br/>
+        </div>
+        <div class="row-fluid">
+            <div class="span8">
+                <b>Payment method:</b> {{ page.meta.payment_method }}<br/>
+                <b>Due date:</b> {{ page.meta.due_date }}<br/>
+            </div>
+        </div>
+        <div class="row-fluid">
+            &nbsp;<br/>
+            &nbsp;<br/>
+        </div>
+        <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-bordered table-striped responsive-utilities">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Name of service</th>
+                <th>PKWiU</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Unit net price</th>
+                <th>Total net price</th>
+                <th>VAT rate</th>
+                <th>VAT amount</th>
+                <th>Total gross price</th>
+              </tr>
+            </thead>
+            <tbody>
+            {%  for item in page.items %}
+              <tr>
+                <td class="text-right">{{ loop.index }}</td>
+                <th>{{ item.name }}</th>
+                <td>{{ item.govcode }}</td>
+                <td>{{ item.qty }}</td>
+                <td>{{ item.unit }}</td>
+                <td class="text-right">{{ "%.2f"|format(item.unit_net) }}</td>
+                <td class="text-right">{{ "%.2f"|format(item.total_net) }}</td>
+                <td>{{ item.vat_rate }}</td>
+                <td class="text-right">{{ "%.2f"|format(item.vat_amount) }}</td>
+                <td class="text-right">{{ "%.2f"|format(item.total_gross) }}</td>
+              </tr>
+            {%  endfor  %}
+              <tr>
+                <th colspan="6" class="text-right">Total</th>
+                <td class="text-right">{{ "%.2f"|format(total.total_net) }}</td>
+                <td></td>
+                <td class="text-right">{{ "%.2f"|format(total.vat_amount) }}</td>
+                <td class="text-right">{{ "%.2f"|format(total.total_gross) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <div class="row-fluid">
+            <div class="span8">
+                <b>Total due:</b> {{ "%.2f"|format(total.total_gross) }}<br/>
+                <b>Paid:</b> {{ "%.2f"|format(0) }}<br/>
+                <b>Outstanding:</b> {{ "%.2f"|format(total.total_gross) }}<br/>
+                <b>In Words:</b> {{ total.total_gross_words }}<br/>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span8">
+                &nbsp;<br/>
+                <b>Notes:</b> {{ page.meta.notes }}<br/>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span5 text-center signature-box">
+                Signature of person authorised to receive the invoice
+            </div>
+            <div class="offset2 span5 text-center signature-box">
+                Signature of person authorised to issue the invoice
+            </div>
+        </div>
+    </div>
+</body>
+</html>

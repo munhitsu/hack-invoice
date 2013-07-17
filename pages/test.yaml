@@ -1,0 +1,24 @@
+nr: 01/07/2013
+issued_on: 01-07-2013
+sold_on: 01-07-2013
+seller:
+  name: Microsoft
+  address: enter address, code city
+  vat: your VAT
+buyer:
+  name: Apple
+  address: enter address, code city
+  vat: his VAT
+items:
+  - name: IT consulting
+    qty: 1
+    unit: day
+    unit_net: 1
+    total_net: 1
+    vat_rate: 20
+    vat_amount: 0
+    total_gross: 1
+notes: N/A
+currency: GBP
+payment_method: Cash
+due_date: 2013-08-01
