@@ -38,3 +38,4 @@ pages/*
 !pages/test.yaml
 *~
 
+.idea
